@@ -1,10 +1,11 @@
-require("dotenv").config();
+require('dotenv').config();
 
-const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors");
-const { connectionToDb, getDb } = require("./db");
-const Product = require('./models/productModel')
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+const { connectionToDb, getDb } = require('./db');
+const Product = require('./models/productModel');
+const Customer = require('./models/customerModel');
 
 // APP INSTANCE
 const app = express();
@@ -17,21 +18,48 @@ app.use((req, res, next) => {
   next();
 });
 
-app.post('/', async(req,res) => {
+app.get('/', (req, res) => {
+  res.json('Welcome to home page');
+});
+
+app.post('/products', async (req, res) => {
+  const {
+    name,
+    description,
+    price,
+    category,
+    brand,
+    quantityAvailable,
+    imageUrl,
+  } = await req.body;
   try {
     const product = await Product.create({
-      name: 'green shirt',
-      description: 'blah blah blah',
-      price: 250,
-      category: 'shirts',
-      brand: 'Lewsis',
-      quantityAvailable: 10,
-      imageUrl: 'black shirt.avif'
-    })
-    res.json(product)
-  } catch(err) {
-    res.json("Rejected")
+      name,
+      description,
+      price,
+      category,
+      brand,
+      quantityAvailable,
+      imageUrl,
+    });
+    res.status(200).json(product);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
+
+  app.post('/newCustomer', async (req, res) => {
+    const { name, email, password } = req.body;
+    try {
+      const newCustomer = await Customer.create({
+        name,
+        email,
+        password,
+      });
+      res.status(200).json(newCustomer);
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  });
   // try {
   //   Product.save({
   //     name: 'green shirt',
@@ -44,12 +72,12 @@ app.post('/', async(req,res) => {
   //   }).then((data) => {
   //     res.json(data)
   //   })
-  
+
   //   res.json(newProduct)
   // } catch(err) {
   //   res.json('Rejected')
   // }
-})
+});
 
 // app.get("/books", (req, res) => {
 //   const p = req.query.p || 1
@@ -86,12 +114,13 @@ app.post('/', async(req,res) => {
 // });
 
 // DATABASE CONNECTION
-let db;
-connectionToDb((err) => {
-  if (!err) {
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => {
     app.listen(process.env.PORT, () => {
-      console.log("listening to port 4000");
+      console.log('Listening to PORT 4000 and connected to database');
     });
-  }
-  db = getDb();
-});
+  })
+  .catch((err) => {
+    console.log(err);
+  });
