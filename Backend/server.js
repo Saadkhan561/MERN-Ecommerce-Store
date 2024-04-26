@@ -3,12 +3,13 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const { connectionToDb, getDb } = require('./db');
-const Product = require('./models/productModel');
-const Customer = require('./models/customerModel');
 
 // APP INSTANCE
 const app = express();
+
+// ROUTER 
+const productRoutes = require('./routes/productRoutes')
+const userRoutes = require('./routes/userRoutes')
 
 // MIDDLEWARE
 app.use(cors());
@@ -18,48 +19,39 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get('/', (req, res) => {
-  res.json('Welcome to home page');
-});
+// PRODUCT ROUTES
+app.use('/', productRoutes)
 
-app.post('/products', async (req, res) => {
-  const {
-    name,
-    description,
-    price,
-    category,
-    brand,
-    quantityAvailable,
-    imageUrl,
-  } = await req.body;
-  try {
-    const product = await Product.create({
-      name,
-      description,
-      price,
-      category,
-      brand,
-      quantityAvailable,
-      imageUrl,
-    });
-    res.status(200).json(product);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+// USER ROUTES
+app.use('/', userRoutes)
 
-  app.post('/newCustomer', async (req, res) => {
-    const { name, email, password } = req.body;
-    try {
-      const newCustomer = await Customer.create({
-        name,
-        email,
-        password,
-      });
-      res.status(200).json(newCustomer);
-    } catch (err) {
-      res.status(500).json({ error: err.message });
-    }
-  });
+// app.post('/newCustomer', async (req, res) => {
+//     const { name, email, password } = req.body;
+//     try {
+//       const newCustomer = await Customer.create({
+//         name,
+//         email,
+//         password,
+//       });
+//       res.status(200).json(newCustomer);
+//     } catch (err) {
+//       res.status(500).json({ error: err.message, status: err.status });
+//     }
+// });
+
+// app.post('/newOrder', async(req, res) => {
+//   const {customer, products, totalAmount} = req.body
+//   try {
+//     const order = await Order.create({
+//       customer,
+//       products,
+//       totalAmount
+//     })
+//     res.status(200).json(order)
+//   } catch (err) {
+//     res.status(500).json({error: err.message})
+//   }
+// })
   // try {
   //   Product.save({
   //     name: 'green shirt',
@@ -77,7 +69,6 @@ app.post('/products', async (req, res) => {
   // } catch(err) {
   //   res.json('Rejected')
   // }
-});
 
 // app.get("/books", (req, res) => {
 //   const p = req.query.p || 1
