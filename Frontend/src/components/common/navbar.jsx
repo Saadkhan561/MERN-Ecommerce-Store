@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const router = useRouter();
@@ -39,7 +40,7 @@ const Navbar = () => {
       <ul className="flex justify-end p-1 pt-6 text-lg mob_display:hidden">
         <li className="navbar_li">Home</li>
         <li className="navbar_li">Shop</li>
-        <li className="navbar_li relative flex items-center gap-2">
+        <Link href='products' className="navbar_li relative flex items-center gap-2">
           Products{" "}
           <img
             onClick={() => products("products")}
@@ -67,7 +68,7 @@ const Navbar = () => {
               Perfumes
             </li>
           </ul>
-        </li>
+        </Link>
         <li className="navbar_li flex justify-center relative">
           <img src="/images/cart.png" alt="cart" height={25} width={25} />
           <div className="absolute top-0 right-4 border border-black h-5 w-5 rounded-full font-bold text-sm bg-black text-white">
