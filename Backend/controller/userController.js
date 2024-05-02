@@ -13,28 +13,28 @@ const createUser = async(req, res) => {
             email: email,
             password: hashedPassword,
         })
-        res.status(200).json(user)
+        return res.status(200).json(user)
     } catch (err) {
-        res.status(500).json({error: err.message})
+        return res.status(500).json({error: err.message})
     }
 }
 
 const loginUser= async(req, res) => {
-    const {name, password} = req.body
-    const token = jwt.sign(name, process.env.ACCESS_TOKEN_SECRET)
-    const user = await User.findOne({name: name})
+    const {email, password} = req.body
+    const user = await User.findOne({email: email})
     if (user === null) {
-        res.status(404).json({error: "User does not exist"})
+        return res.status(404).json({error: "User does not exist"})
     }
-    const userData = {token: token, user: user, message: "Logged In"}
     try {
         if ( await bcrypt.compare(password, user.password)) {
-            res.status(200).json(userData)
+            const token = jwt.sign(user.name, process.env.ACCESS_TOKEN_SECRET)
+            const userData = {token: token, user: user, message: "Logged In"}
+            return res.status(200).json(userData)
         } else {
-            res.status(500).json({error: "Incorrect Password"})
+            return res.status(500).json({error: "Incorrect Password"})
         }
     } catch(err) {
-        res.status(500).json({error: err.message})
+        return res.status(500).json({error: err.message})
     }
 }
 

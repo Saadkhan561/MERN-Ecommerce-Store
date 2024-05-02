@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { useSignupMutation } from "@/hooks/mutation";
+import { useRouter } from "next/router";
 
 const SignUp = () => {
   const [passHidden, setPassHidden]=  useState(true)
@@ -34,8 +36,20 @@ const SignUp = () => {
     resolver: yupResolver(signupSchema),
   });
 
+  // MUTATION HOOK
+  const router = useRouter()
+  const {mutate: user} = useSignupMutation({
+    onSuccess(data) {
+      console.log(data)
+      router.push('register?login=true')
+    },
+    onError(error) {
+      console.log(error)
+    }
+  })
+
   const onSubmit = (data) => {
-    console.log(data);
+    user(data)
   };
 
   return (
