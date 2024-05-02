@@ -9,3 +9,7 @@
 .carousel_img {
   @apply h-[300px] w-[400px] mob_display:h-[300px] mob_display:w-[300px]
 }
+
+.input_field {
+  @apply  focus:border-b-blue-500 focus:outline-none duration-200 w-full bg-slate-100
+}

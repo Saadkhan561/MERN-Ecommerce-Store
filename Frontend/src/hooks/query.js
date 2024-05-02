@@ -1,3 +1,4 @@
+import { fetchAllproducts } from "@/services/productService"
 import { fetchUser } from "@/services/userService"
 import { useQuery } from "@tanstack/react-query"
 
@@ -5,7 +6,7 @@ import { useQuery } from "@tanstack/react-query"
 export const useFetchUser = (options) => {
     return useQuery({
         ...options,
-        queryKey: "user",
+        queryKey: ['user'],
         queryFn: fetchUser
     })
 }
@@ -13,7 +14,7 @@ export const useFetchUser = (options) => {
 export const useFetchAllProducts = (options) => {
     return useQuery({
         ...options,
-        queryKey: "products",
+        queryKey: ["products"],
         queryFn: fetchAllproducts
     })
 }

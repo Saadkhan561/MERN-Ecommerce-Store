@@ -20,7 +20,6 @@ app.use((req, res, next) => {
 });
 
 // FUNCTION TO AUTHORIZE USER 
-
 function authenticateToken(req, res ,next) {
   const authHeader = req.headers['authorization']
   const token = authHeader && authHeader.split(' ')[1]

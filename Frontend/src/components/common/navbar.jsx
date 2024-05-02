@@ -1,6 +1,7 @@
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+// import { Link } from "next/link";
 
 const Navbar = () => {
   const router = useRouter();
@@ -75,9 +76,9 @@ const Navbar = () => {
             5
           </div>
         </li>
-        <li className="navbar_li flex justify-center">
+        <Link href={'register'} className="navbar_li flex justify-center">
           <img src="/images/account.png" alt="account" height={25} width={25} />
-        </li>
+        </Link>
       </ul>
       {/* SMALL SCREEN NAVBAR */}
       <div
@@ -136,9 +137,9 @@ const Navbar = () => {
           <li className="p-3 hover:bg-slate-200 hover:cursor-pointer duration-200 font-semibold">
             My Cart
           </li>
-          <li className="p-3 hover:bg-slate-200 hover:cursor-pointer duration-200 font-semibold">
+          <Link href={'register'} className="p-3 hover:bg-slate-200 hover:cursor-pointer duration-200 font-semibold">
             Account
-          </li>
+          </Link>
         </ul>
       </div>
     </div>
