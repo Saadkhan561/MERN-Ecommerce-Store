@@ -4,9 +4,12 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useLoginMutation } from "@/hooks/mutation";
 import { useRouter } from "next/router";
+import { Bounce, toast, ToastContainer } from "react-toastify";
+import userStore from "@/store/store";
 
 const Login = () => {
   const [passHidden, setPassHidden] = useState(true);
+
   const initialValues = {
     email: "",
     password: "",
@@ -28,14 +31,40 @@ const Login = () => {
   });
 
   // MUTATION HOOK
-  const router = useRouter()
+  const router = useRouter();
+  // const {setUser} = userStore()
   const { mutate: user } = useLoginMutation({
     onSuccess(data) {
       console.log(data);
-      router.push('/')
+      // setUser(data)
+      toast.success("Logged In", {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+      });
+      setTimeout(() => {
+        router.push("/");
+      }, 2000);
     },
     onError(error) {
-      console.log(error.message);
+      console.log(error);
+      toast.error((error), {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+      });
     },
   });
 
@@ -44,14 +73,14 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center w-1/2 pt-10">
-      <div className="text-3xl font-semibold">Login</div>
+    <div className="flex flex-col items-center justify-center w-1/2 register_small_div:w-full pt-10">
+      <ToastContainer />;<div className="text-3xl font-semibold register_mini_div:text-2xl">Login</div>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="w-4/5 pt-5 flex flex-col gap-5"
       >
         <div className="flex flex-col gap-2">
-          <label className="text-sm  text-slate-500" htmlFor="email">
+          <label className="text-sm register_mini_div:text-xs  text-slate-500" htmlFor="email">
             Enter your email
           </label>
           <div className="flex gap-1 items-center border-b border-b-slate-300">
@@ -68,7 +97,7 @@ const Login = () => {
           )}
         </div>
         <div className="flex flex-col gap-2">
-          <label className="text-sm  text-slate-500" htmlFor="password">
+          <label className="text-sm register_mini_div:text-xs text-slate-500" htmlFor="password">
             Enter your password
           </label>
           <div className="flex gap-1 items-center border-b border-b-slate-300">
@@ -120,6 +149,9 @@ const Login = () => {
           </button>
         </div>
       </form>
+      <div className="text-sm mt-4">
+        <p >Don't have an account? <a className="underline text-blue-500 cursor-pointer" href="register">Signup</a></p>
+      </div>
     </div>
   );
 };

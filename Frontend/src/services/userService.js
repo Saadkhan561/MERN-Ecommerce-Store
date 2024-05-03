@@ -10,7 +10,7 @@ export const loginUser = async(data) => {
         localStorage.setItem('token', user.data.token)
         return user.data
     } catch(err) {
-        throw new Error(err.message)
+        throw err.response.data.error
     }
 }
 
@@ -19,6 +19,6 @@ export const signupUser = async(data) => {
         const user = await axios.post(`${BASE_URL}/createUser`, data)
         return user.data
     } catch(err) {
-        throw new Error(err.message)
+        throw err.response.data.error
     }
 }

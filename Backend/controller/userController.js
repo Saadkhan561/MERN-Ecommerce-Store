@@ -4,6 +4,10 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
 const createUser = async(req, res) => {
+    const existedUser = await User.findOne({email: req.body.email})
+    if (existedUser!==null) { 
+        return res.status(409).json({error: "Account already exist with this gmail"})
+    }
     const salt = await bcrypt.genSalt(10)
     const hashedPassword = await bcrypt.hash(req.body.password, salt)
     const {name, email} = req.body

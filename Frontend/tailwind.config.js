@@ -15,7 +15,10 @@ module.exports = {
         slider1: {max: '1300px'},
         slider1_full: {min: '1300px'},
         slider2: {max: '1000px'},
-        slider3: {max: '750px'}
+        slider3: {max: '750px'},
+        register_small_div: {max: '800px'},
+        register_full_div: {min: '800px'},
+        register_mini_div: {max: '500px'}
       }
     },
   },

@@ -18,6 +18,8 @@ app.use((req, res, next) => {
   console.log(req.path, req.method);
   next();
 });
+// TO USE THE IMAGES SAVED IN MONGODB WITH THE BACKEND RELATIVE PATH
+app.use('/images', express.static('D:/Project Files/MERN-Ecommerce-Store/Backend/images'));
 
 // PRODUCT ROUTES
 app.use('/', productRoutes)

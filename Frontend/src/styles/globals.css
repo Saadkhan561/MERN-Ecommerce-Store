@@ -11,5 +11,5 @@
 }
 
 .input_field {
-  @apply  focus:border-b-blue-500 focus:outline-none duration-200 w-full bg-slate-100
+  @apply  focus:border-b-blue-500 focus:outline-none duration-200 w-full bg-slate-100 register_mini_div:text-sm
 }

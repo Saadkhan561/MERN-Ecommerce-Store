@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Product = require("../models/productModel");
+const Category = require("../models/categoryModel")
 
 const getAllProducts = async (req, res) => {
   try {
@@ -50,4 +51,16 @@ const postProduct = async (req, res) => {
   }
 };
 
-module.exports = { getAllProducts, postProduct, getProductById };
+const fetchAllCategories = async(req,res) => {
+  const categories = await Category.find({})
+  try {
+    if (categories ===null) {
+      return res.status(404).json("No categories found!")
+    }
+    return res.status(200).json(categories)
+  } catch(err) {
+    res.status(500).json({error: err.message})
+  }
+}
+
+module.exports = { getAllProducts, postProduct, getProductById, fetchAllCategories };

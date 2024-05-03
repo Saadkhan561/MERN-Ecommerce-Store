@@ -5,6 +5,8 @@ import * as yup from "yup";
 import { useSignupMutation } from "@/hooks/mutation";
 import { useRouter } from "next/router";
 
+import { Bounce, Slide, toast, ToastContainer } from "react-toastify";
+
 const SignUp = () => {
   const [passHidden, setPassHidden]=  useState(true)
 
@@ -19,6 +21,7 @@ const SignUp = () => {
     name: yup.string().required("Name is required"),
     password: yup
       .string()
+      .min(8, "Password must be atleast 8 characters long")
       .matches(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/,
         "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
@@ -41,10 +44,32 @@ const SignUp = () => {
   const {mutate: user} = useSignupMutation({
     onSuccess(data) {
       console.log(data)
+      toast.success("Account Created", {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Slide,
+      })
       router.push('register?login=true')
     },
     onError(error) {
       console.log(error)
+      toast.error((error), {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Slide,
+      })
     }
   })
 
@@ -53,14 +78,15 @@ const SignUp = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center w-1/2 pt-10">
-      <div className="text-3xl font-semibold">Sign Up</div>
+    <div className="flex flex-col items-center justify-center w-1/2 register_small_div:w-full pt-10">
+      <ToastContainer />
+      <div className="text-3xl font-semibold register_mini_div:text-2xl">Sign Up</div>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="w-4/5 pt-5 flex flex-col gap-5"
       >
         <div className="flex flex-col gap-2">
-          <label className="text-sm  text-slate-500" htmlFor="name">
+          <label className="text-sm  register_mini_div:text-xs  text-slate-500" htmlFor="name">
             Enter your name
           </label>
           <div className="flex gap-1 items-center border-b border-b-slate-300">
@@ -77,7 +103,7 @@ const SignUp = () => {
           )}
         </div>
         <div className="flex flex-col gap-2">
-          <label className="text-sm  text-slate-500" htmlFor="email">
+          <label className="text-sm  register_mini_div:text-xs text-slate-500" htmlFor="email">
             Enter your email
           </label>
           <div className="flex gap-1 items-center border-b border-b-slate-300">
@@ -94,7 +120,7 @@ const SignUp = () => {
           )}
         </div>
         <div className="flex flex-col gap-2">
-          <label className="text-sm  text-slate-500" htmlFor="password">
+          <label className="text-sm  register_mini_div:text-xs text-slate-500" htmlFor="password">
             Enter your password
           </label>
           <div className="flex gap-1 items-center border-b border-b-slate-300">
@@ -124,6 +150,9 @@ const SignUp = () => {
           </button>
         </div>
       </form>
+      <div className="text-sm mt-4">
+        <p >Already have an account? <a className="underline text-blue-500 cursor-pointer" href="register?login=true">Login</a></p>
+      </div>
     </div>
   );
 };

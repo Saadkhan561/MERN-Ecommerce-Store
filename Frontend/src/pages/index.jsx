@@ -59,7 +59,7 @@ export default function Home() {
         }
       >
         {/* AD DIV */}
-        <div data-aos="fade-down" data-aos-duration='1100' className="h-screen w-full grid grid-cols-2 gap-2 mob_display:flex mob_display:flex-col mob_display:justify-center mob_display:mt-20">
+        <div data-aos="fade-down" data-aos-duration='1100' className="h-screen w-full grid grid-cols-2 gap-2 mob_display:flex mob_display:flex-col mob_display:justify-center">
           <div className="flex items-center flex-col w-full">
             <div className="font-semibold text-black text-5xl p-4 mt-40 mob_display:text-3xl mob_display:text-center mob_display:mt-16">
               <p>Shop with</p>

@@ -9,3 +9,12 @@ export const fetchAllproducts = async() => {
         throw new Error(err.message)
     }
 }
+
+export const fetchAllCategories =async() => {
+    try {
+        const categories = await axios.get(`${BASE_URL}/getCategories`)
+        return categories.data
+    } catch(err) {
+        throw new Error(err)
+    }
+}

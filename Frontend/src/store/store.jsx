@@ -1,7 +1,9 @@
-import { create } from "zustand";
+// import { create } from "zustand";
 
-export const userStore = create({
-    userInfo: {},
-    addUserInfo: (newUserInfo) => set((state) => ({userInfo: newUserInfo})),
-    deleteUserInfo: () => set((state) => ({userInfo: {}}))
-})
+// const userStore = create({
+//     userInfo: {},
+//     addUserInfo: (newUserInfo) => set((state) => ({userInfo: newUserInfo})),
+//     deleteUserInfo: () => set((state) => ({userInfo: {}}))
+// })
+
+// export default userStore

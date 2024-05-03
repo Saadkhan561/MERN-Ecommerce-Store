@@ -1,10 +1,15 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // import { Link } from "next/link";
-
 const Navbar = () => {
+  const [logOut, setLogout] = useState(false);
+  const [user, setUser] = useState();
   const router = useRouter();
+
+  useEffect(() => {
+    setUser(localStorage.getItem("user"));
+  }, []);
 
   const sideBar = (name) => {
     if (router.query[name]) {
@@ -24,6 +29,11 @@ const Navbar = () => {
     router.push(router, undefined, { shallow: true });
   };
 
+  const logout = () => {
+    localStorage.removeItem("user");
+    router.push("register?login=true");
+  };
+
   return (
     <div className="">
       <div className="full_screen:hidden p-8 flex justify-end">
@@ -41,7 +51,10 @@ const Navbar = () => {
       <ul className="flex justify-end p-1 pt-6 text-lg mob_display:hidden">
         <li className="navbar_li">Home</li>
         <li className="navbar_li">Shop</li>
-        <Link href='products' className="navbar_li relative flex items-center gap-2">
+        <Link
+          href="products"
+          className="navbar_li relative flex items-center gap-2"
+        >
           Products{" "}
           <img
             onClick={() => products("products")}
@@ -76,9 +89,32 @@ const Navbar = () => {
             5
           </div>
         </li>
-        <Link href={'register'} className="navbar_li flex justify-center">
-          <img src="/images/account.png" alt="account" height={25} width={25} />
-        </Link>
+        {user ? (
+          <li className="navbar_li flex justify-center relative">
+            <img
+              onClick={() => setLogout(!logOut)}
+              src="/images/account.png"
+              alt="account"
+              height={25}
+              width={25}
+            />
+            {logOut ? (
+              <div
+                onClick={logout}
+                className="absolute z-10 top-10 right-0 w-[80px] p-1 text-sm border border-slate-200 text-red-500 font-semibold cursor-pointer hover:bg-slate-100 rounded-md duration-200"
+              >
+                Logout
+              </div>
+            ) : null}
+          </li>
+        ) : (
+          <Link
+            href={"register?login=true"}
+            className="navbar_li flex justify-center text-sm"
+          >
+            LogIn/SignUp
+          </Link>
+        )}
       </ul>
       {/* SMALL SCREEN NAVBAR */}
       <div
@@ -101,6 +137,18 @@ const Navbar = () => {
               />
             </button>
           </li>
+          {user ? (
+            <li className="p-3 hover:bg-slate-200 hover:cursor-pointer duration-200 font-semibold flex justify-between">
+              <div className="flex justify-between w-full">Account</div>
+            </li>
+          ) : (
+            <Link
+              href={"register?login=true"}
+              className="p-3 hover:bg-slate-200 hover:cursor-pointer duration-200 font-semibold flex justify-between"
+            >
+              LogIn/SignUp
+            </Link>
+          )}
           <li className="p-3 hover:bg-slate-200 hover:cursor-pointer duration-200 font-semibold flex justify-between">
             Home
           </li>
@@ -137,9 +185,12 @@ const Navbar = () => {
           <li className="p-3 hover:bg-slate-200 hover:cursor-pointer duration-200 font-semibold">
             My Cart
           </li>
-          <Link href={'register'} className="p-3 hover:bg-slate-200 hover:cursor-pointer duration-200 font-semibold">
-            Account
-          </Link>
+          <li
+            onClick={logout}
+            className="p-3 text-red-500 hover:bg-slate-200 hover:cursor-pointer duration-200 font-semibold"
+          >
+            Logout
+          </li>
         </ul>
       </div>
     </div>

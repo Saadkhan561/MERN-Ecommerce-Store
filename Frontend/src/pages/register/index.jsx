@@ -3,10 +3,11 @@ import SignUp from "@/components/register/sigup";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 
-const Register = () => {
-  // const [login, setLogin] = useState(false);
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-  const router = useRouter()
+const Register = () => {
+  const router = useRouter();
 
   const login = (name) => {
     if (router.query[name]) {
@@ -18,8 +19,8 @@ const Register = () => {
   };
   return (
     <div className="flex justify-center items-center h-screen">
-      {/* MAIN DIV */}
-      <div className="relative w-[900px] h-[500px] rounded-md shadow-2xl bg-slate-100">
+      {/* MAIN DIV FOR FULL SCREEN */}
+      <div className="relative w-4/5 h-[500px] rounded-md shadow-2xl bg-slate-100 register_small_div:hidden">
         <div className="flex">
           {/* LOGIN DIV */}
           <Login />
@@ -35,8 +36,8 @@ const Register = () => {
         >
           {eval(!router.query.login) ? (
             <div
-              onClick={() => login('login')}
-              className="flex gap-2 cursor-pointer"
+              onClick={() => login("login")}
+              className="flex gap-2 flex-wrap cursor-pointer"
             >
               <div>Already have an account? Login</div>
               <img
@@ -48,7 +49,7 @@ const Register = () => {
             </div>
           ) : (
             <div
-              onClick={() => login('login')}
+              onClick={() => login("login")}
               className="flex gap-2 cursor-pointer"
             >
               <img
@@ -62,6 +63,20 @@ const Register = () => {
             </div>
           )}
         </div>
+      </div>
+      {/* MAIN DIV FOR SMALL SCREEN */}
+      <div className="w-4/5 register_small_div:w-3/5 register_mini_div:w-4/5 h-[500px] rounded-md shadow-2xl bg-slate-100 register_full_div:hidden">
+        {eval(router.query.login) ? (
+          /* LOGIN DIV */
+          <div>
+            <Login />
+          </div>
+        ) : (
+          /* SIGNUP DIV */
+          <div>
+            <SignUp />
+          </div>
+        )}
       </div>
     </div>
   );
