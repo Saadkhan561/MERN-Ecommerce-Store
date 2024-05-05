@@ -5,19 +5,24 @@ import Slider from "react-slick";
 import Card from "@/components/card";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useEffect, useRef } from "react";
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+import AOS from "aos";
+import "aos/dist/aos.css";
+
+const BASE_URL = "http://localhost:4000";
 
 // Import Swiper styles
 import "swiper/css";
 import { useRouter } from "next/router";
+import { useFetchAllProducts } from "@/hooks/query";
 
 export default function Home() {
+  // QUERY TO FETCH ALL PRODUCTS
+  const { data, isLoading } = useFetchAllProducts();
+  console.log(data);
 
   useEffect(() => {
-    AOS.init({
-    })
-  }, [])
+    AOS.init({});
+  }, []);
 
   var settings = {
     dots: true,
@@ -46,7 +51,6 @@ export default function Home() {
     }
   };
 
-
   const router = useRouter();
 
   return (
@@ -59,7 +63,11 @@ export default function Home() {
         }
       >
         {/* AD DIV */}
-        <div data-aos="fade-down" data-aos-duration='1100' className="h-screen w-full grid grid-cols-2 gap-2 mob_display:flex mob_display:flex-col mob_display:justify-center">
+        <div
+          data-aos="fade-down"
+          data-aos-duration="1100"
+          className="h-screen w-full grid grid-cols-2 gap-2 mob_display:flex mob_display:flex-col mob_display:justify-center"
+        >
           <div className="flex items-center flex-col w-full">
             <div className="font-semibold text-black text-5xl p-4 mt-40 mob_display:text-3xl mob_display:text-center mob_display:mt-16">
               <p>Shop with</p>
@@ -72,44 +80,32 @@ export default function Home() {
             </div>
           </div>
           {/* CAROUSEL DIV */}
-          <div className="flex justify-center">
+          <div className="flex justify-center items-center border-none outline-none">
             <Slider
-              className="flex justify-center items-center text-white p-6 w-[400px] h-[500px] mob_display:h-[400px] mt-24 mob_display:mt-10"
+              className="flex justify-center items-center text-white p-6 w-3/5 h-[500px] mob_display:h-[400px] mt-24 mob_display:mt-10 border-none outline-none"
               {...settings}
             >
-              <div className="">
-                <img
-                  className="h-[450px] w-[400px] mob_display:h-[300px] mob_display:w-[300px]"
-                  src="/images/shirt.jpg"
-                  alt=""
-                />
-              </div>
-              <div>
-                <img
-                  className="h-[450px] w-[400px] mob_display:h-[300px] mob_display:w-[300px]"
-                  src="/images/perfume.jpg"
-                  alt=""
-                />
-              </div>
-              <div>
-                <img
-                  className="h-[450px] w-[400px] mob_display:h-[300px] mob_display:w-[300px]"
-                  src="/images/shirt.jpg"
-                  alt=""
-                />
-              </div>
-              <div>
-                <img
-                  className="h-[450px] w-[400px] mob_display:h-[300px] mob_display:w-[300px]"
-                  src="/images/perfume.jpg"
-                  alt=""
-                />
-              </div>
+              {isLoading ? (
+                <div>Loading...</div>
+              ) : (
+                data?.slice(0, 4).map((product) => (
+                  <div key={product._id} className="">
+                    <img
+                      className="h-[450px] w-[400px] mob_display:h-[300px] mob_display:w-[300px] border-none outline-none"
+                      src={`${BASE_URL}/images/${product.imageUrl}`}
+                      alt=""
+                    />
+                  </div>
+                ))
+              )}
             </Slider>
           </div>
         </div>
         {/* TRENDING DIV */}
-        <div data-aos='fade-down' className="flex justify-center mt-20 relative">
+        <div
+          data-aos="fade-down"
+          className="flex justify-center mt-20 relative"
+        >
           <div>
             {/* CARD MAIN DIV */}
             <div className="flex justify-between items-center">
@@ -161,7 +157,7 @@ export default function Home() {
                 </SwiperSlide>
                 ...
               </Swiper>
-              <div className="flex justify-between w-[1300px] slider1:w-[1000px] slider2:w-[700px] slider3:w-[450px] items-center absolute top-1/2 z-10">
+              <div className="flex justify-between w-[1300px] slider1:w-[1000px] slider2:w-[700px] slider3:w-4/5 items-center absolute top-1/2 z-10">
                 <div>
                   <button onClick={() => handlePrev(swiper1.current)}>
                     <img
@@ -174,7 +170,7 @@ export default function Home() {
                   </button>
                 </div>
                 <div>
-                  <button onClick={()=>handleNext(swiper1.current)}>
+                  <button onClick={() => handleNext(swiper1.current)}>
                     <img
                       src="/images/right-arrow.png"
                       alt=""
@@ -188,7 +184,10 @@ export default function Home() {
           </div>
         </div>
         {/* SHIRTS DIV */}
-        <div data-aos='fade-down' className="flex justify-center mt-20 relative">
+        <div
+          data-aos="fade-down"
+          className="flex justify-center mt-20 relative"
+        >
           <div>
             {/* CARD MAIN DIV */}
             <div className="flex justify-between items-center">
@@ -199,10 +198,24 @@ export default function Home() {
             </div>
             {/* CARDS */}
             <div className="flex justify-between w-[1200px] slider1:w-[800px] slider2:w-[600px] slider3:w-[300px] p-4 mt-8 slider1:hidden">
-              <div className="flex flex-wrap gap-10 w-full">
-                <Card image={"/images/shirt.jpg"} />
-                <Card image={"/images/shirt.jpg"} />
-                <Card image={"/images/shirt.jpg"} />
+              <div className="lex flex-wrap gap-10 w-full">
+                {isLoading ? (
+                  <div>Loading...</div>
+                ) : (
+                  data?.slice(0, 3).map((product) => {
+                    if (product.category === "662b80e5dda8c7cc70acd30c") {
+                      return (
+                        <Card
+                          key={product._id}
+                          name={product.name}
+                          price={product.price}
+                          imgUrl={product.imageUrl}
+                          id={product._id}
+                        />
+                      );
+                    }
+                  })
+                )}
               </div>
               <div className="flex justify-center items-center">
                 <Slider
@@ -283,9 +296,9 @@ export default function Home() {
                 </SwiperSlide>
                 ...
               </Swiper>
-              <div className="flex justify-between w-[1300px] slider1:w-[1000px] slider2:w-[700px] slider3:w-[450px] items-center absolute top-1/2 z-10">
+              <div className="flex justify-between w-[1300px] slider1:w-[1000px] slider2:w-[700px] slider3:w-4/5 items-center absolute top-1/2 z-10">
                 <div>
-                  <button onClick={()=>handlePrev(swiper2.current)}>
+                  <button onClick={() => handlePrev(swiper2.current)}>
                     <img
                       className="rotate-180"
                       src="/images/right-arrow.png"
@@ -296,7 +309,7 @@ export default function Home() {
                   </button>
                 </div>
                 <div>
-                  <button onClick={()=>handleNext(swiper2.current)}>
+                  <button onClick={() => handleNext(swiper2.current)}>
                     <img
                       src="/images/right-arrow.png"
                       alt=""
@@ -310,7 +323,10 @@ export default function Home() {
           </div>
         </div>
         {/* PERFUMES DIV */}
-        <div  data-aos='fade-down' className="flex justify-center mt-20 relative">
+        <div
+          data-aos="fade-down"
+          className="flex justify-center mt-20 relative"
+        >
           <div>
             {/* CARD MAIN DIV */}
             <div className="flex justify-between items-center">
@@ -405,9 +421,9 @@ export default function Home() {
                 </SwiperSlide>
                 ...
               </Swiper>
-              <div className="flex justify-between w-[1300px] slider1:w-[1000px] slider2:w-[700px] slider3:w-[450px] items-center absolute top-1/2 z-10">
+              <div className="flex justify-between w-[1300px] slider1:w-[1000px] slider2:w-[700px] slider3:w-4/5 items-center absolute top-1/2 z-10">
                 <div>
-                  <button onClick={()=>handlePrev(swiper3.current)}>
+                  <button onClick={() => handlePrev(swiper3.current)}>
                     <img
                       className="rotate-180"
                       src="/images/right-arrow.png"
@@ -418,7 +434,7 @@ export default function Home() {
                   </button>
                 </div>
                 <div>
-                  <button onClick={()=>handleNext(swiper3.current)}>
+                  <button onClick={() => handleNext(swiper3.current)}>
                     <img
                       src="/images/right-arrow.png"
                       alt=""

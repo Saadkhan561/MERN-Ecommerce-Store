@@ -34,6 +34,7 @@ const postProduct = async (req, res) => {
     brand,
     quantityAvailable,
     imageUrl,
+    discount
   } = await req.body;
   try {
     const product = await Product.create({
@@ -44,6 +45,7 @@ const postProduct = async (req, res) => {
       brand,
       quantityAvailable,
       imageUrl,
+      discount
     });
     res.status(200).json(product);
   } catch (err) {

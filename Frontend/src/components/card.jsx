@@ -3,12 +3,12 @@ import { useRouter } from "next/router";
 
 const BASE_URL = "http://localhost:4000";
 
-const Card = ({ name, price, imgUrl }) => {
+const Card = ({ id, name, price, imgUrl }) => {
   const router = useRouter()
   return (
     <>
       {/* CARD DIV */}
-      <div onClick={()=> router.push('/product_details')} className="w-[200px] h-[350px] border border-slate-300 shadow-2xl flex flex-col justify-between hover:scale-105 hover:cursor-pointer duration-200">
+      <div onClick={()=> router.push(`/products/${id}`)} className="w-[200px] h-[350px] border border-slate-300 shadow-2xl flex flex-col justify-between hover:scale-105 hover:cursor-pointer duration-200">
         <div>
           <img className="rounded-lg h-[200px]" src={`${BASE_URL}/images/${imgUrl}`} alt=""/>
         </div>

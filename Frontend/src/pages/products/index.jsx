@@ -46,6 +46,7 @@ const Products = () => {
                 return (
                   <Card
                     key={product._id}
+                    id={product._id}
                     name={product.name}
                     price={product.price}
                     imgUrl={product.imageUrl}
