@@ -49,7 +49,7 @@ const Navbar = () => {
       </div>
       {/* FULL SCREEN NAVBAR */}
       <ul className="flex justify-end p-1 pt-6 text-lg mob_display:hidden">
-        <li className="navbar_li">Home</li>
+        <Link href={'/'} className="navbar_li">Home</Link>
         <li className="navbar_li">Shop</li>
         <Link
           href="products"

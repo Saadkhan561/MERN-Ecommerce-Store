@@ -4,7 +4,7 @@ import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import Card from "@/components/card";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
@@ -16,9 +16,17 @@ import { useRouter } from "next/router";
 import { useFetchAllProducts } from "@/hooks/query";
 
 export default function Home() {
+
   // QUERY TO FETCH ALL PRODUCTS
   const { data, isLoading } = useFetchAllProducts();
   console.log(data);
+
+  // SHIRTS ARRAY
+  const shirtsToRender =
+    data &&
+    data
+      .filter((product) => product.category === "662b80e5dda8c7cc70acd30c")
+      .slice(0, 3);
 
   useEffect(() => {
     AOS.init({});
@@ -82,7 +90,7 @@ export default function Home() {
           {/* CAROUSEL DIV */}
           <div className="flex justify-center items-center border-none outline-none">
             <Slider
-              className="flex justify-center items-center text-white p-6 w-3/5 h-[500px] mob_display:h-[400px] mt-24 mob_display:mt-10 border-none outline-none"
+              className="flex justify-center items-center text-white p-6 w-3/5 h-[500px] mob_display:h-[400px] mob_display:mt-10 border-none outline-none"
               {...settings}
             >
               {isLoading ? (
@@ -198,58 +206,43 @@ export default function Home() {
             </div>
             {/* CARDS */}
             <div className="flex justify-between w-[1200px] slider1:w-[800px] slider2:w-[600px] slider3:w-[300px] p-4 mt-8 slider1:hidden">
-              <div className="lex flex-wrap gap-10 w-full">
+              <div className="flex flex-wrap gap-10 w-full">
                 {isLoading ? (
                   <div>Loading...</div>
                 ) : (
-                  data?.slice(0, 3).map((product) => {
-                    if (product.category === "662b80e5dda8c7cc70acd30c") {
-                      return (
-                        <Card
-                          key={product._id}
-                          name={product.name}
-                          price={product.price}
-                          imgUrl={product.imageUrl}
-                          id={product._id}
-                        />
-                      );
-                    }
-                  })
+                  shirtsToRender.map((shirt) => (
+                    <Card
+                      key={shirt._id}
+                      name={shirt.name}
+                      price={shirt.price}
+                      imgUrl={shirt.imageUrl}
+                      id={shirt._id}
+                    />
+                  ))
                 )}
               </div>
               <div className="flex justify-center items-center">
                 <Slider
-                  className="flex justify-center items-center text-white p-6 w-[300px] h-[400px] mob_display:h-[400px]"
+                  className="flex justify-center items-center text-white p-6 w-[300px] h-[350px] mob_display:h-[400px]"
                   {...settings}
                 >
-                  <div className="">
-                    <img
-                      className="carousel_img"
-                      src="/images/shirt.jpg"
-                      alt=""
-                    />
-                  </div>
-                  <div>
-                    <img
-                      className="carousel_img"
-                      src="/images/shirt.jpg"
-                      alt=""
-                    />
-                  </div>
-                  <div>
-                    <img
-                      className="carousel_img"
-                      src="/images/shirt.jpg"
-                      alt=""
-                    />
-                  </div>
-                  <div>
-                    <img
-                      className="carousel_img"
-                      src="/images/shirt.jpg"
-                      alt=""
-                    />
-                  </div>
+                  {isLoading ? (
+                    <div>Loading...</div>
+                  ) : (
+                    data?.map((product) => {
+                      if (product.category === "662b80e5dda8c7cc70acd30c") {
+                        return (
+                          <div key={product._id} className="">
+                            <img
+                              className="h-max w-max mob_display:h-[300px] mob_display:w-[300px] border-none outline-none"
+                              src={`${BASE_URL}/images/${product.imageUrl}`}
+                              alt=""
+                            />
+                          </div>
+                        );
+                      }
+                    })
+                  )}
                 </Slider>
               </div>
             </div>
