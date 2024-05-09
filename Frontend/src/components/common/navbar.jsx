@@ -1,15 +1,22 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import { useFetchAllCategories } from "@/hooks/query";
 // import { Link } from "next/link";
 const Navbar = () => {
   const [logOut, setLogout] = useState(false);
   const [user, setUser] = useState();
   const router = useRouter();
+  const [pathName, setPathName] = useState();
 
   useEffect(() => {
     setUser(localStorage.getItem("user"));
-  }, []);
+    setPathName(router.pathname);
+  }, [pathName]);
+
+  const { data: categories, isLoading: isCategoryLoading } =
+    useFetchAllCategories();
+  console.log(categories);
 
   const sideBar = (name) => {
     if (router.query[name]) {
@@ -49,40 +56,44 @@ const Navbar = () => {
       </div>
       {/* FULL SCREEN NAVBAR */}
       <ul className="flex justify-end p-1 pt-6 text-lg mob_display:hidden">
-        <Link href={'/'} className="navbar_li">Home</Link>
-        <li className="navbar_li">Shop</li>
-        <Link
-          href="products"
-          className="navbar_li relative flex items-center gap-2"
-        >
+        <Link href={"/"} className="navbar_li">
+          Home
+        </Link>
+        <Link href={"/products"} className="navbar_li">
+          Shop
+        </Link>
+        <li className="navbar_li relative flex items-center gap-2">
           Products{" "}
-          <img
-            onClick={() => products("products")}
-            className={
-              eval(router.query.products)
-                ? "-rotate-90 cursor-pointer duration-200"
-                : "rotate-90 cursor-pointer duration-200"
-            }
-            src="/images/right-arrow.png"
-            alt=""
-            height={15}
-            width={15}
-          />
+          {pathName === "/products" ? null : (
+            <img
+              onClick={() => products("products")}
+              className={
+                eval(router.query.products)
+                  ? "-rotate-90 cursor-pointer duration-200"
+                  : "rotate-90 cursor-pointer duration-200"
+              }
+              src="/images/right-arrow.png"
+              alt=""
+              height={15}
+              width={15}
+            />
+          )}
           <ul
             className={
               eval(router.query.products)
-                ? "absolute text-start top-10 text-sm shadow-md border border-slate-300 rounded-md w-32"
+                ? "absolute z-10 text-start top-10 text-sm shadow-md border border-slate-300 rounded-md w-32 bg-white"
                 : "absolute text-start top-10 text-sm shadow-md border border-slate-300 rounded-md w-32 hidden"
             }
           >
-            <li className="cursor-pointer hover:bg-slate-100 duration-200 p-1">
-              Shirts
-            </li>
-            <li className="cursor-pointer hover:bg-slate-100 duration-200 p-1">
-              Perfumes
-            </li>
+            {categories?.map((category) => (
+              <li className="hover:bg-slate-200 duration-200 cursor-pointer w-full p-1">
+                <Link href={`/products?category=${category._id}`}>
+                  {category.name}
+                </Link>
+              </li>
+            ))}
           </ul>
-        </Link>
+        </li>
         <li className="navbar_li flex justify-center relative">
           <img src="/images/cart.png" alt="cart" height={25} width={25} />
           <div className="absolute top-0 right-4 border border-black h-5 w-5 rounded-full font-bold text-sm bg-black text-white">
@@ -150,10 +161,10 @@ const Navbar = () => {
             </Link>
           )}
           <li className="p-3 hover:bg-slate-200 hover:cursor-pointer duration-200 font-semibold flex justify-between">
-            Home
+            <Link href={"/"}>Home</Link>
           </li>
           <li className="p-3 hover:bg-slate-200 hover:cursor-pointer duration-200 font-semibold">
-            Shop
+            <Link href={"/products"}>Shop</Link>
           </li>
           <li
             onClick={() => products("products")}
@@ -175,12 +186,13 @@ const Navbar = () => {
           <div
             className={eval(router.query.products) ? "ml-3 text-sm" : "hidden"}
           >
-            <li className="p-3 hover:bg-slate-200 hover:cursor-pointer font-semibold">
-              Shirts
-            </li>
-            <li className="p-3 hover:bg-slate-200 hover:cursor-pointer font-semibold">
-              Perfumes
-            </li>
+            {categories?.map((category) => (
+              <li className="hover:bg-slate-200 text-slate-600 duration-200 cursor-pointer w-full p-1 font-semibold">
+                <Link href={`/products?category=${category._id}`}>
+                  {category.name}
+                </Link>
+              </li>
+            ))}
           </div>
           <li className="p-3 hover:bg-slate-200 hover:cursor-pointer duration-200 font-semibold">
             My Cart

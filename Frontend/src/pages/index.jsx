@@ -14,9 +14,9 @@ const BASE_URL = "http://localhost:4000";
 import "swiper/css";
 import { useRouter } from "next/router";
 import { useFetchAllProducts } from "@/hooks/query";
+import Link from "next/link";
 
 export default function Home() {
-
   // QUERY TO FETCH ALL PRODUCTS
   const { data, isLoading } = useFetchAllProducts();
   console.log(data);
@@ -27,6 +27,8 @@ export default function Home() {
     data
       .filter((product) => product.category === "662b80e5dda8c7cc70acd30c")
       .slice(0, 3);
+
+  const shoesToRender = data && data.filter((product) => product.category === '662b8120dda8c7cc70acd30e').slice(0,3)
 
   useEffect(() => {
     AOS.init({});
@@ -201,7 +203,7 @@ export default function Home() {
             <div className="flex justify-between items-center">
               <div className="text-3xl font-semibold">Clothing</div>
               <div className="text-sm text-blue-500 hover:underline hover:cursor-pointer">
-                <a href="/">View all</a>
+                <Link href="/products?category=662b80e5dda8c7cc70acd30c">View all</Link>
               </div>
             </div>
             {/* CARDS */}
@@ -266,28 +268,20 @@ export default function Home() {
                   },
                 }}
               >
-                <SwiperSlide>
-                  <Card image={"/images/shirt.jpg"} />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <Card image={"/images/shirt.jpg"} />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <Card image={"/images/shirt.jpg"} />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <Card image={"/images/shirt.jpg"} />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <Card image={"/images/shirt.jpg"} />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <Card image={"/images/shirt.jpg"} />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <Card image={"/images/shirt.jpg"} />
-                </SwiperSlide>
-                ...
+                {data?.map((product) => {
+                  if (product.category === "662b80e5dda8c7cc70acd30c") {
+                    return (
+                      <SwiperSlide>
+                        <Card
+                          key={product._id}
+                          name={product.name}
+                          price={product.price}
+                          imgUrl={product.imageUrl}
+                        />
+                      </SwiperSlide>
+                    );
+                  }
+                })}
               </Swiper>
               <div className="flex justify-between w-[1300px] slider1:w-[1000px] slider2:w-[700px] slider3:w-4/5 items-center absolute top-1/2 z-10">
                 <div>
@@ -315,7 +309,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-        {/* PERFUMES DIV */}
+        {/* SHOES DIV */}
         <div
           data-aos="fade-down"
           className="flex justify-center mt-20 relative"
@@ -323,51 +317,50 @@ export default function Home() {
           <div>
             {/* CARD MAIN DIV */}
             <div className="flex justify-between items-center">
-              <div className="text-3xl font-semibold">Perfumes</div>
+              <div className="text-3xl font-semibold">Shoes</div>
               <div className="text-sm text-blue-500 hover:underline hover:cursor-pointer">
-                <a href="/">View all</a>
+                <Link href={'/products?category=662b8120dda8c7cc70acd30e'}>View all</Link>
               </div>
             </div>
             {/* CARDS */}
             <div className="flex justify-between w-[1200px] slider1:w-[800px] slider2:w-[600px] slider3:w-[300px] p-4 mt-8 slider1:hidden">
               <div className="flex flex-wrap gap-10 w-full">
-                <Card image={"/images/perfume.jpg"} />
-                <Card image={"/images/perfume.jpg"} />
-                <Card image={"/images/perfume.jpg"} />
+              {isLoading ? (
+                  <div>Loading...</div>
+                ) : (
+                  shoesToRender.map((shoe) => (
+                    <Card
+                      key={shoe._id}
+                      name={shoe.name}
+                      price={shoe.price}
+                      imgUrl={shoe.imageUrl}
+                      id={shoe._id}
+                    />
+                  ))
+                )}
               </div>
               <div className="flex justify-center items-center">
                 <Slider
                   className="flex justify-center items-center text-white p-6 w-[300px] h-[400px] mob_display:h-[400px]"
                   {...settings}
                 >
-                  <div className="">
-                    <img
-                      className="carousel_img"
-                      src="/images/perfume.jpg"
-                      alt=""
-                    />
-                  </div>
-                  <div>
-                    <img
-                      className="carousel_img"
-                      src="/images/perfume.jpg"
-                      alt=""
-                    />
-                  </div>
-                  <div>
-                    <img
-                      className="carousel_img"
-                      src="/images/perfume.jpg"
-                      alt=""
-                    />
-                  </div>
-                  <div>
-                    <img
-                      className="carousel_img"
-                      src="/images/perfume.jpg"
-                      alt=""
-                    />
-                  </div>
+                  {isLoading ? (
+                    <div>Loading...</div>
+                  ) : (
+                    data?.map((product) => {
+                      if (product.category === "662b8120dda8c7cc70acd30e") {
+                        return (
+                          <div key={product._id} className="">
+                            <img
+                              className="h-max w-max mob_display:h-[300px] mob_display:w-[300px] border-none outline-none"
+                              src={`${BASE_URL}/images/${product.imageUrl}`}
+                              alt=""
+                            />
+                          </div>
+                        );
+                      }
+                    })
+                  )}
                 </Slider>
               </div>
             </div>
@@ -391,28 +384,20 @@ export default function Home() {
                   },
                 }}
               >
-                <SwiperSlide>
-                  <Card image={"/images/perfume.jpg"} />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <Card image={"/images/perfume.jpg"} />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <Card image={"/images/perfume.jpg"} />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <Card image={"/images/perfume.jpg"} />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <Card image={"/images/perfume.jpg"} />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <Card image={"/images/perfume.jpg"} />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <Card image={"/images/perfume.jpg"} />
-                </SwiperSlide>
-                ...
+                {data?.map((product) => {
+                  if (product.category === "662b8120dda8c7cc70acd30e") {
+                    return (
+                      <SwiperSlide>
+                        <Card
+                          key={product._id}
+                          name={product.name}
+                          price={product.price}
+                          imgUrl={product.imageUrl}
+                        />
+                      </SwiperSlide>
+                    );
+                  }
+                })}
               </Swiper>
               <div className="flex justify-between w-[1300px] slider1:w-[1000px] slider2:w-[700px] slider3:w-4/5 items-center absolute top-1/2 z-10">
                 <div>
