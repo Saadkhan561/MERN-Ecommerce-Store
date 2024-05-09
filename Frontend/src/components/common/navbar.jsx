@@ -16,7 +16,6 @@ const Navbar = () => {
 
   const { data: categories, isLoading: isCategoryLoading } =
     useFetchAllCategories();
-  console.log(categories);
 
   const sideBar = (name) => {
     if (router.query[name]) {
@@ -87,7 +86,7 @@ const Navbar = () => {
           >
             {categories?.map((category) => (
               <li className="hover:bg-slate-200 duration-200 cursor-pointer w-full p-1">
-                <Link href={`/products?category=${category._id}`}>
+                <Link key={category._id} href={`/products?category=${category._id}`}>
                   {category.name}
                 </Link>
               </li>
@@ -188,7 +187,7 @@ const Navbar = () => {
           >
             {categories?.map((category) => (
               <li className="hover:bg-slate-200 text-slate-600 duration-200 cursor-pointer w-full p-1 font-semibold">
-                <Link href={`/products?category=${category._id}`}>
+                <Link key={category._id} href={`/products?category=${category._id}`}>
                   {category.name}
                 </Link>
               </li>

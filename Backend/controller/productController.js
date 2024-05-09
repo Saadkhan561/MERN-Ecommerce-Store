@@ -13,6 +13,7 @@ const getAllProducts = async (req, res) => {
 
 const getProductById = async (req, res) => {
   const { id } = req.params;
+  console.log(req.params.id)
   if (!mongoose.Types.ObjectId.isValid(id)) {
     res.status(404).json("Invalid Id");
   } else {
