@@ -13,11 +13,11 @@ const Card = ({ id, name, price, imgUrl }) => {
           <img className="rounded-lg h-[200px] mob_display:h-[130px] mob_display:w-fit" src={`${BASE_URL}/images/${imgUrl}`} alt=""/>
         </div>
         <div>
-          <div className="flex flex-col justify-center items-center mb-4">
-            <div className="text-xl mob_display:text-base font-semibold">{name}</div>
-            <div className="text-lg mob_display:text-sm text-gray-500 font-semibold">{price} Rs</div>
+          <div className="flex flex-col justify-center items-center mb-4 p-1">
+            <div className="text-sm mob_display:text-sm font-semibold">{name}</div>
+            <div className="text-sm text-gray-500 font-semibold">{price} Rs</div>
           </div>
-          <div className=" bg-black text-white font-semibold hover:text-black hover:bg-white hover:cursor-pointer duration-200 flex justify-center text-lg mob_display:text-xs p-1">
+          <div className=" bg-black text-white text-base font-semibold hover:text-black hover:bg-white hover:cursor-pointer duration-200 flex justify-center mob_display:text-xs p-1">
             <button>Add to cart</button>
           </div>
         </div>

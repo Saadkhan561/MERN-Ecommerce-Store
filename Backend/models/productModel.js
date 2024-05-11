@@ -10,6 +10,7 @@ const productSchema = mongoose.Schema(
     quantityAvailable: { type: Number, default: 0 },
     imageUrl: { type: String },
     discount: { type: Number, default: 0 },
+    color: {type: Array}
   },
   { timestamps: true }
 );
