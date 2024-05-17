@@ -7,6 +7,7 @@ import { useFetchProductById, useFetchAllProducts } from "@/hooks/query";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import useCartStore from "@/store/cart";
 
 const ProductDetails = () => {
   const [counter, setCounter] = useState(1)
@@ -69,6 +70,13 @@ const ProductDetails = () => {
     console.log(data);
   };
 
+  // FUNCTION TO STORE ITEM IN THE CART
+  const {addItem, cart} = useCartStore()
+
+  const addToCart =(data) => {
+    addItem({...data,  quantity: counter}, data._id)
+  }
+  
   const BASE_URL = "http://localhost:4000";
 
   return (
@@ -264,7 +272,7 @@ const ProductDetails = () => {
                     Available : {data.quantityAvailable}
                   </div>
                 </div>
-                <div className="mt-4 font-semibold text-md">
+                <div onClick={() => addToCart(data)} className="mt-4 font-semibold text-md">
                   <button className="bg-black text-white w-[200px] rounded-sm p-1 cursor-pointer hover:bg-white hover:text-black border hover:border-black duration-200 mob_display:text-sm">
                     Add to cart
                   </button>

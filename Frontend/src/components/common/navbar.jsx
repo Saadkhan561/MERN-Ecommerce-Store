@@ -2,6 +2,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useFetchAllCategories } from "@/hooks/query";
+import useCartStore from "@/store/cart";
 // import { Link } from "next/link";
 const Navbar = () => {
   const [logOut, setLogout] = useState(false);
@@ -39,6 +40,9 @@ const Navbar = () => {
     localStorage.removeItem("user");
     router.push("register?login=true");
   };
+
+  const {cart} = useCartStore()
+  console.log(Object.keys(cart).length)
 
   return (
     <div className="">
@@ -93,12 +97,12 @@ const Navbar = () => {
             ))}
           </ul>
         </li>
-        <li className="navbar_li flex justify-center relative">
+        <Link href={'/cart'} className="navbar_li flex justify-center relative">
           <img src="/images/cart.png" alt="cart" height={25} width={25} />
           <div className="absolute top-0 right-4 border border-black h-5 w-5 rounded-full font-bold text-sm bg-black text-white">
-            5
+            {Object.keys(cart).length}
           </div>
-        </li>
+        </Link>
         {user ? (
           <li className="navbar_li flex justify-center relative">
             <img
