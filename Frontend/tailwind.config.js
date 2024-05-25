@@ -18,7 +18,8 @@ module.exports = {
         slider3: {max: '750px'},
         register_small_div: {max: '800px'},
         register_full_div: {min: '800px'},
-        register_mini_div: {max: '500px'}
+        register_mini_div: {max: '500px'},
+        cart: {max: '1100px'}
       }
     },
   },

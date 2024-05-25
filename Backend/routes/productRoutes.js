@@ -1,5 +1,5 @@
 const express = require('express')
-const { getAllProducts, getProductById, fetchAllCategories, postProduct } = require('../controller/productController')
+const { getAllProducts, getProductById, fetchAllCategories, postProduct, productPayment } = require('../controller/productController')
 
 const router = express.Router()
 
@@ -20,5 +20,6 @@ router.get('/getAllProducts', getAllProducts)
 router.get('/getProductById/:id', getProductById)
 router.get('/getCategories', fetchAllCategories)
 router.post('/newProduct', postProduct)
+router.post('/create-checkout-session', productPayment)
 
 module.exports = router

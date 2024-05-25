@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 const Product = require("../models/productModel");
 const Category = require("../models/categoryModel")
 
+const stripe = require("stripe")(process.env.STRIPE_SECRET)
+
 const getAllProducts = async (req, res) => {
   try {
     const products = await Product.find({}).sort({ createdAt: -1 });
@@ -47,4 +49,27 @@ const fetchAllCategories = async(req,res) => {
   }
 }
 
-module.exports = { getAllProducts, postProduct, getProductById, fetchAllCategories };
+const productPayment = async(req, res) => {
+  const lineItems = Object.entries(req.body).map(([key, value]) => ({
+    price_data: {
+      currency: "usd",
+      product_data: {
+        name: value.name,
+      },
+      unit_amount: Math.round(value.price)
+    },
+    quantity: value.quantity
+  }));
+
+  const session = await stripe.checkout.sessions.create({
+    payment_method_types:["card"],
+    line_items:lineItems,
+    mode:"payment",
+    success_url:"http://localhost:4000/success",
+    cancel_url:"http://localhost:4000/cancel"
+  })
+
+  res.json({id:session.id})
+}
+
+module.exports = { getAllProducts, postProduct, getProductById, fetchAllCategories, productPayment };

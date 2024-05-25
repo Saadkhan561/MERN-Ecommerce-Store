@@ -28,3 +28,12 @@ export const fetchProductById = async (id) => {
     throw new Error(err);
   }
 };
+
+export const paymenyHook = async(data) => {
+  try {
+    const res = await axios.post(`${BASE_URL}/create-checkout-session`, data)
+    return res.data
+  } catch(err) {
+    throw new Error(err)
+  }
+}

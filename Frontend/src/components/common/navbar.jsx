@@ -89,8 +89,8 @@ const Navbar = () => {
             }
           >
             {categories?.map((category) => (
-              <li className="hover:bg-slate-200 duration-200 cursor-pointer w-full p-1">
-                <Link key={category._id} href={`/products?category=${category._id}`}>
+              <li key={category._id} className="hover:bg-slate-200 duration-200 cursor-pointer w-full p-1">
+                <Link href={`/products?category=${category._id}`}>
                   {category.name}
                 </Link>
               </li>
@@ -190,8 +190,8 @@ const Navbar = () => {
             className={eval(router.query.products) ? "ml-3 text-sm" : "hidden"}
           >
             {categories?.map((category) => (
-              <li className="hover:bg-slate-200 text-slate-600 duration-200 cursor-pointer w-full p-1 font-semibold">
-                <Link key={category._id} href={`/products?category=${category._id}`}>
+              <li key={category._id} className="hover:bg-slate-200 text-slate-600 duration-200 cursor-pointer w-full p-1 font-semibold">
+                <Link href={`/products?category=${category._id}`}>
                   {category.name}
                 </Link>
               </li>

@@ -1,3 +1,4 @@
+import { paymenyHook } from "@/services/productService";
 import { loginUser, signupUser } from "@/services/userService";
 import { useMutation } from "@tanstack/react-query";
 
@@ -14,3 +15,10 @@ export const useSignupMutation = (options) => {
     ...options,
   });
 };
+
+export const usePaymentHook = (options) => {
+  return useMutation({
+    mutationFn: paymenyHook,
+    ...options
+  })
+}

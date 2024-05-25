@@ -10,6 +10,7 @@ const app = express();
 // ROUTER 
 const productRoutes = require('./routes/productRoutes')
 const userRoutes = require('./routes/userRoutes')
+const orderRoutes = require('./routes/orderRoutes')
 
 // MIDDLEWARE
 app.use(cors());
@@ -26,6 +27,9 @@ app.use('/', productRoutes)
 
 // USER ROUTES
 app.use('/', userRoutes)
+
+// ORDER ROUTES
+app.use('/', orderRoutes)
 
 // app.post('/newCustomer', async (req, res) => {
 //     const { name, email, password } = req.body;

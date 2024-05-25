@@ -19,7 +19,6 @@ import Link from "next/link";
 export default function Home() {
   // QUERY TO FETCH ALL PRODUCTS
   const { data, isLoading } = useFetchAllProducts();
-  console.log(data);
 
   // SHIRTS ARRAY
   const shirtsToRender =

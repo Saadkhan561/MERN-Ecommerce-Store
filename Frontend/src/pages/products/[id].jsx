@@ -13,16 +13,15 @@ const ProductDetails = () => {
   const [counter, setCounter] = useState(1)
   const router = useRouter();
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const [product, setProduct] = useState(null)
 
   const {
     data: products,
     isLoading: isProductLoading,
-    refetch,
   } = useFetchAllProducts();
 
   const id = router.query.id;
   const { data, isLoading } = useFetchProductById(id);
-  // data && console.log(data);
 
   const incrementCounter =() => {
     if (data&& data.quantityAvailable === counter) {
@@ -47,10 +46,14 @@ const ProductDetails = () => {
         .filter((product) => product.category === data.category)
         .slice(0, 5);
     setFilteredProducts(productsArray);
+
+    if (data) {
+      setProduct(data)
+    }
   }, [products, data]);
 
   const initialValues = {
-    size: "",
+    size: "medium",
   };
 
   const productSchema = yup.object({
@@ -66,17 +69,12 @@ const ProductDetails = () => {
     resolver: yupResolver(productSchema),
   });
 
+  const {addItem, cart} = useCartStore()
   const onSubmit = (data) => {
-    console.log(data);
+    console.log(data, product);
+    addItem({...product,  quantity: counter, size: data.size}, product._id)
   };
 
-  // FUNCTION TO STORE ITEM IN THE CART
-  const {addItem, cart} = useCartStore()
-
-  const addToCart =(data) => {
-    addItem({...data,  quantity: counter}, data._id)
-  }
-  
   const BASE_URL = "http://localhost:4000";
 
   return (
@@ -272,7 +270,7 @@ const ProductDetails = () => {
                     Available : {data.quantityAvailable}
                   </div>
                 </div>
-                <div onClick={() => addToCart(data)} className="mt-4 font-semibold text-md">
+                <div className="mt-4 font-semibold text-md">
                   <button className="bg-black text-white w-[200px] rounded-sm p-1 cursor-pointer hover:bg-white hover:text-black border hover:border-black duration-200 mob_display:text-sm">
                     Add to cart
                   </button>
