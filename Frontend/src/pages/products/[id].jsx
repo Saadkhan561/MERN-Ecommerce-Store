@@ -71,7 +71,6 @@ const ProductDetails = () => {
 
   const {addItem, cart} = useCartStore()
   const onSubmit = (data) => {
-    console.log(data, product);
     addItem({...product,  quantity: counter, size: data.size}, product._id)
   };
 
@@ -89,6 +88,10 @@ const ProductDetails = () => {
         <div className="flex gap-2 text-sm text-slate-500 mb-6 font-semibold">
           <a className="hover:underline cursor-pointer" href="/">
             Home
+          </a>
+          <p>/</p>
+          <a className="hover:underline cursor-pointer" href="/products">
+            Products
           </a>
           <p>/</p>
           <a className="hover:underline cursor-pointer" href="/product_details">

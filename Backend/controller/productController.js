@@ -49,7 +49,9 @@ const fetchAllCategories = async(req,res) => {
   }
 }
 
+// FUNCTION FOR ONLINE PAYMENT
 const productPayment = async(req, res) => {
+  console.log(req.body)
   const lineItems = Object.entries(req.body).map(([key, value]) => ({
     price_data: {
       currency: "usd",
@@ -65,8 +67,8 @@ const productPayment = async(req, res) => {
     payment_method_types:["card"],
     line_items:lineItems,
     mode:"payment",
-    success_url:"http://localhost:4000/success",
-    cancel_url:"http://localhost:4000/cancel"
+    success_url:"http://localhost:3000/success",
+    cancel_url:"http://localhost:3000/cancel"
   })
 
   res.json({id:session.id})

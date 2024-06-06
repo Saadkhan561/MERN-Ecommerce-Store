@@ -1,12 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-const getServerSnapshot = () => ({
-  cart: {},
-  addItem: () => {},
-  deleteItem: () => {},
-});
-
 const useCartStore = create(
   persist(
     (set) => ({
@@ -33,6 +27,10 @@ const useCartStore = create(
           console.log(rest);
           return { cart: rest };
         }),
+      clearCart: () => 
+        set(() => {
+          return {cart: {}}
+        })
     }),
     {
       name: "cart-storage", // unique name for local storage key

@@ -1,15 +1,17 @@
 import React, { useEffect } from "react";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import { useRouter } from "next/router";
 
 const Footer = () => {
+  const router = useRouter()
     
     useEffect(() => {
         AOS.init({})
     }, [])
 
   return (
-    <div className="bg-gray-900 flex justify-center text-slate-300 mt-20">
+    <div className={router.query.payment ? "opacity-50 duration-200 bg-gray-900 flex justify-center text-slate-300 mt-20":"bg-gray-900 flex justify-center text-slate-300 mt-20"}>
       <div className="w-3/5 p-12 text-lg">
         <div className="flex justify-evenly mob_display:flex-col items-center font-semibold flex-wrap gap-4">
           <p className="cursor-pointer hover:underline duration-200">Home</p>

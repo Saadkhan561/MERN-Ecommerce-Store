@@ -82,7 +82,7 @@ export default function Home() {
               <p>Shop with</p>
               <p>excellent discounts...</p>
             </div>
-            <div>
+            <div onClick={() => router.push('/products')}>
               <button className="text-lg mt-8 rounded-2xl font-semibold text-black border border-black hover:cursor-pointer hover:bg-black hover:text-white duration-200 p-1 pl-4 pr-4">
                 Shop now
               </button>

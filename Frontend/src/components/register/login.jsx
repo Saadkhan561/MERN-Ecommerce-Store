@@ -5,7 +5,7 @@ import * as yup from "yup";
 import { useLoginMutation } from "@/hooks/mutation";
 import { useRouter } from "next/router";
 import { Bounce, toast, ToastContainer } from "react-toastify";
-import userStore from "@/store/store";
+import useUserStore from "@/store/user";
 
 const Login = () => {
   const [passHidden, setPassHidden] = useState(true);
@@ -32,11 +32,10 @@ const Login = () => {
 
   // MUTATION HOOK
   const router = useRouter();
-  // const {setUser} = userStore()
+  const {addUserInfo} = useUserStore()
   const { mutate: user } = useLoginMutation({
     onSuccess(data) {
-      console.log(data);
-      // setUser(data)
+      addUserInfo(data)
       toast.success("Logged In", {
         position: "top-center",
         autoClose: 2000,
@@ -48,13 +47,14 @@ const Login = () => {
         theme: "dark",
         transition: Bounce,
       });
+      reset()
       setTimeout(() => {
         router.push("/");
       }, 2000);
     },
     onError(error) {
       console.log(error);
-      toast.error((error), {
+      toast.error(error, {
         position: "top-center",
         autoClose: 1000,
         hideProgressBar: true,
@@ -69,18 +69,25 @@ const Login = () => {
   });
 
   const onSubmit = (data) => {
+    console.log(data)
     user(data);
   };
 
   return (
     <div className="flex flex-col items-center justify-center w-1/2 register_small_div:w-full pt-10">
-      <ToastContainer />;<div className="text-3xl font-semibold register_mini_div:text-2xl">Login</div>
+      <ToastContainer />;
+      <div className="text-3xl font-semibold register_mini_div:text-2xl">
+        Login
+      </div>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="w-4/5 pt-5 flex flex-col gap-5"
       >
         <div className="flex flex-col gap-2">
-          <label className="text-sm register_mini_div:text-xs  text-slate-500" htmlFor="email">
+          <label
+            className="text-sm register_mini_div:text-xs  text-slate-500"
+            htmlFor="email"
+          >
             Enter your email
           </label>
           <div className="flex gap-1 items-center border-b border-b-slate-300">
@@ -97,7 +104,10 @@ const Login = () => {
           )}
         </div>
         <div className="flex flex-col gap-2">
-          <label className="text-sm register_mini_div:text-xs text-slate-500" htmlFor="password">
+          <label
+            className="text-sm register_mini_div:text-xs text-slate-500"
+            htmlFor="password"
+          >
             Enter your password
           </label>
           <div className="flex gap-1 items-center border-b border-b-slate-300">
@@ -150,8 +160,14 @@ const Login = () => {
         </div>
       </form>
       <div className="text-sm mt-4">
-        <p >Don't have an account? <a className="underline text-blue-500 cursor-pointer" href="register">Signup</a></p>
+        <p>
+          Don't have an account?{" "}
+          <a className="underline text-blue-500 cursor-pointer" href="register">
+            Signup
+          </a>
+        </p>
       </div>
+      {/* <div onClick={() => signIn()}><button>Login with google</button></div> */}
     </div>
   );
 };

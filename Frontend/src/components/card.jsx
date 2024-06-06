@@ -18,7 +18,7 @@ const Card = ({ id, name, price, imgUrl }) => {
             <div className="text-sm text-gray-500 font-semibold">{price} Rs</div>
           </div>
           <div className=" bg-black text-white text-base font-semibold hover:text-black hover:bg-white hover:cursor-pointer duration-200 flex justify-center mob_display:text-xs p-1">
-            <button>Add to cart</button>
+            <button>View Product</button>
           </div>
         </div>
       </div>

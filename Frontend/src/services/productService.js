@@ -37,3 +37,12 @@ export const paymenyHook = async(data) => {
     throw new Error(err)
   }
 }
+
+export const placeOrder = async(data) => {
+  try {
+    const res = await axios.post(`${BASE_URL}/placeOrder`, data)
+    return res.data
+  } catch(err) {
+    throw new Error(err)
+  }
+}

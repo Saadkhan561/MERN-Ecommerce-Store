@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useFetchAllCategories } from "@/hooks/query";
 import useCartStore from "@/store/cart";
+import useUserStore from "@/store/user";
 // import { Link } from "next/link";
 const Navbar = () => {
   const [logOut, setLogout] = useState(false);
@@ -10,8 +11,8 @@ const Navbar = () => {
   const router = useRouter();
   const [pathName, setPathName] = useState();
 
+  const {currentUser, deleteUserInfo} = useUserStore()
   useEffect(() => {
-    setUser(localStorage.getItem("user"));
     setPathName(router.pathname);
   }, [pathName]);
 
@@ -37,7 +38,7 @@ const Navbar = () => {
   };
 
   const logout = () => {
-    localStorage.removeItem("user");
+    deleteUserInfo()
     router.push("register?login=true");
   };
 
@@ -45,7 +46,7 @@ const Navbar = () => {
   console.log(Object.keys(cart).length)
 
   return (
-    <div className="">
+    <div className={router.query.payment ? "opacity-50 duration-200":""}>
       <div className="full_screen:hidden p-8 flex justify-end">
         <button onClick={() => sideBar("open")}>
           <img
@@ -103,7 +104,7 @@ const Navbar = () => {
             {Object.keys(cart).length}
           </div>
         </Link>
-        {user ? (
+        {currentUser ? (
           <li className="navbar_li flex justify-center relative">
             <img
               onClick={() => setLogout(!logOut)}

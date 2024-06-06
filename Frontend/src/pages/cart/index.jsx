@@ -4,6 +4,7 @@ import useCartStore from "@/store/cart";
 import { useRouter } from "next/router";
 import { loadStripe } from "@stripe/stripe-js";
 import { usePaymentHook } from "@/hooks/mutation";
+import { withProtectedWrapper } from "@/components/Protected Route/protectedRoute";
 
 const BASE_URL = "http://localhost:4000";
 
@@ -14,6 +15,15 @@ const Cart = () => {
   const cartLength = Object.keys(cart).length;
   console.log(cart);
   const router = useRouter();
+
+  const paymentOption = (name) => {
+    if (router.query[name]) {
+      delete router.query[name];
+    } else {
+      router.query[name] = true;
+    }
+    router.push(router, undefined, { shallow: true });
+  };
 
   
   useEffect(() => {
@@ -123,7 +133,7 @@ const Cart = () => {
             {cartLength ? (
               <div className="w-full flex justify-end mt-5">
                 <div
-                  onClick={makePayment}
+                  onClick={() => paymentOption("payment")}
                   className=" bg-black text-white text-base font-semibold hover:text-black hover:bg-white hover:cursor-pointer duration-200 flex justify-center mob_display:text-sm p-1"
                 >
                   <button>Proceed to checkout</button>
@@ -139,4 +149,4 @@ const Cart = () => {
   );
 };
 
-export default Cart;
+export default withProtectedWrapper(Cart);
