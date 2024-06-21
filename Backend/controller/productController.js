@@ -74,4 +74,16 @@ const productPayment = async(req, res) => {
   res.json({id:session.id})
 }
 
-module.exports = { getAllProducts, postProduct, getProductById, fetchAllCategories, productPayment };
+// SEARCH A PRODUCT
+const searchResults  =async(req, res) => {
+  const query = req.query.q
+  const regex = new RegExp(query, 'i')
+  try {
+    const searchResult = await Product.find({$or: [{name: regex}, {description: regex}]})
+    res.status(200).json(searchResult)
+  } catch(err) {
+    res.status(500).json({msg: "No results..."})
+  }
+}
+
+module.exports = { getAllProducts, postProduct, getProductById, fetchAllCategories, productPayment, searchResults };

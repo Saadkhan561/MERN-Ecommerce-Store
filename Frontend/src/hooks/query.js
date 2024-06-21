@@ -1,7 +1,9 @@
 import {
   fetchAllCategories,
   fetchAllproducts,
-  fetchProductById
+  fetchProductById,
+  fetchTrendingProducts,
+  searchResults
 } from "@/services/productService";
 import { fetchUser } from "@/services/userService";
 import { useQuery } from "@tanstack/react-query";
@@ -23,6 +25,14 @@ export const useFetchAllProducts = (options) => {
   });
 };
 
+export const useFetchTrendingProducts = (options) => {
+  return useQuery({
+    ...options,
+    queryKey: ["trendingProducts"],
+    queryFn: fetchTrendingProducts
+  })
+}
+
 export const useFetchAllCategories = (options) => {
   return useQuery({
     queryKey: ["categories"],
@@ -35,5 +45,13 @@ export const useFetchProductById = (id, options) => {
     ...options,
     queryKey: ["product", id],
     queryFn: () => fetchProductById(id)
+  })
+}
+
+export const useFetchSearchResults = (param, options) =>  {
+  return useQuery({
+    ...options,
+    queryKey: ["searchResults", param],
+    queryFn: () => searchResults(param)
   })
 }

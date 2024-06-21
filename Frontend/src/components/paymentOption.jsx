@@ -45,16 +45,41 @@ const PaymentOption = () => {
     },
   });
 
+  const { mutate: placeOrderPayOnline } = usePlaceOrder({
+    onSuccess(data) {
+      console.log(data);
+      clearCart()
+    },
+    onError(data) {
+      console.log(data);
+    },
+  });
+  
+  const { currentUser } = useUserStore();
+  const customer_id = currentUser.user._id;
+
   const makePayment = async () => {
+    const resultArray = Object.entries(cart).map(([itemKey, value]) => {
+      return {
+        product: itemKey,
+        size: value.size,
+        quantity: value.quantity
+
+      };
+    });
+    const newOrder = {
+      customer: customer_id,
+      products: resultArray,
+      totalAmount: totalAmount,
+    };
+    placeOrderPayOnline(newOrder);
     payment(cart);
   };
 
-  const { currentUser } = useUserStore();
-  const customer_id = currentUser.user._id;
   const placeNewOrder = () => {
     const resultArray = Object.entries(cart).map(([itemKey, value]) => {
       return {
-        id: itemKey,
+        product: itemKey,
         size: value.size,
         quantity: value.quantity
 

@@ -13,12 +13,15 @@ const BASE_URL = "http://localhost:4000";
 // Import Swiper styles
 import "swiper/css";
 import { useRouter } from "next/router";
-import { useFetchAllProducts } from "@/hooks/query";
+import { useFetchAllProducts, useFetchTrendingProducts } from "@/hooks/query";
 import Link from "next/link";
 
 export default function Home() {
   // QUERY TO FETCH ALL PRODUCTS
   const { data, isLoading } = useFetchAllProducts();
+
+  const { data: trending } = useFetchTrendingProducts();
+  console.log(trending);
 
   // SHIRTS ARRAY
   const shirtsToRender =
@@ -27,7 +30,11 @@ export default function Home() {
       .filter((product) => product.category === "662b80e5dda8c7cc70acd30c")
       .slice(0, 3);
 
-  const shoesToRender = data && data.filter((product) => product.category === '662b8120dda8c7cc70acd30e').slice(0,3)
+  const shoesToRender =
+    data &&
+    data
+      .filter((product) => product.category === "662b8120dda8c7cc70acd30e")
+      .slice(0, 3);
 
   useEffect(() => {
     AOS.init({});
@@ -82,7 +89,7 @@ export default function Home() {
               <p>Shop with</p>
               <p>excellent discounts...</p>
             </div>
-            <div onClick={() => router.push('/products')}>
+            <div onClick={() => router.push("/products")}>
               <button className="text-lg mt-8 rounded-2xl font-semibold text-black border border-black hover:cursor-pointer hover:bg-black hover:text-white duration-200 p-1 pl-4 pr-4">
                 Shop now
               </button>
@@ -119,13 +126,11 @@ export default function Home() {
             {/* CARD MAIN DIV */}
             <div className="flex justify-between items-center">
               <div className="text-3xl font-semibold">Trending</div>
-              <div className="text-sm text-blue-500 hover:underline hover:cursor-pointer">
-                <a href="/">View all</a>
-              </div>
             </div>
             {/* CARDS */}
             <div className="flex justify-center w-[1200px] slider1:w-[800px] slider2:w-[600px] slider3:w-[300px] p-4 mt-8">
               <Swiper
+              className="w-full h-[400px]"
                 ref={swiper1}
                 onSlideChange={() => console.log("slide change")}
                 onSwiper={(swiper) => console.log(swiper)}
@@ -143,28 +148,17 @@ export default function Home() {
                   },
                 }}
               >
-                <SwiperSlide>
-                  <Card image={"/images/shirt.jpg"} />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <Card image={"/images/shoe.jpg"} />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <Card image={"/images/perfume.jpg"} />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <Card image={"/images/shirt.jpg"} />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <Card image={"/images/shoe.jpg"} />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <Card image={"/images/perfume.jpg"} />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <Card image={"/images/shirt.jpg"} />
-                </SwiperSlide>
-                ...
+                {trending?.map((product) => (
+                  <SwiperSlide>
+                    <Card
+                      key={product._id}
+                      name={product.name}
+                      price={product.price}
+                      imgUrl={product.imageUrl}
+                      id={product._id}
+                    />
+                  </SwiperSlide>
+                ))}
               </Swiper>
               <div className="flex justify-between w-[1300px] slider1:w-[1000px] slider2:w-[700px] slider3:w-4/5 items-center absolute top-1/2 z-10">
                 <div>
@@ -202,7 +196,9 @@ export default function Home() {
             <div className="flex justify-between items-center">
               <div className="text-3xl font-semibold">Clothing</div>
               <div className="text-sm text-blue-500 hover:underline hover:cursor-pointer">
-                <Link href="/products?category=662b80e5dda8c7cc70acd30c">View all</Link>
+                <Link href="/products?category=662b80e5dda8c7cc70acd30c">
+                  View all
+                </Link>
               </div>
             </div>
             {/* CARDS */}
@@ -318,13 +314,15 @@ export default function Home() {
             <div className="flex justify-between items-center">
               <div className="text-3xl font-semibold">Shoes</div>
               <div className="text-sm text-blue-500 hover:underline hover:cursor-pointer">
-                <Link href={'/products?category=662b8120dda8c7cc70acd30e'}>View all</Link>
+                <Link href={"/products?category=662b8120dda8c7cc70acd30e"}>
+                  View all
+                </Link>
               </div>
             </div>
             {/* CARDS */}
             <div className="flex justify-between w-[1200px] slider1:w-[800px] slider2:w-[600px] slider3:w-[300px] p-4 mt-8 slider1:hidden">
               <div className="flex flex-wrap gap-10 w-full">
-              {isLoading ? (
+                {isLoading ? (
                   <div>Loading...</div>
                 ) : (
                   shoesToRender.map((shoe) => (

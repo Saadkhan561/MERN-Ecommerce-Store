@@ -13,7 +13,7 @@ const Cart = () => {
   const { cart, deleteItem } = useCartStore();
   const [totalAmount, setTotalAmount] = useState(0);
   const cartLength = Object.keys(cart).length;
-  console.log(cart);
+  // console.log(cart);
   const router = useRouter();
 
   const paymentOption = (name) => {

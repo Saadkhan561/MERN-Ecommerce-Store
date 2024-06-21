@@ -46,3 +46,21 @@ export const placeOrder = async(data) => {
     throw new Error(err)
   }
 }
+
+export const fetchTrendingProducts = async() => {
+  try {
+    const res = await axios.get(`${BASE_URL}`)
+    return res.data
+  } catch(err) {
+    throw new Error(err.msg)
+  }
+}
+
+export const searchResults = async(param) => {
+  try {
+    const res = await axios.get(`${BASE_URL}/search?q=${param}`)
+    return res.data
+  } catch(err) {
+    throw new Error(err.msg)
+  }
+}

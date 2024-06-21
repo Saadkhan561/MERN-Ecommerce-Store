@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useFetchAllCategories } from "@/hooks/query";
 import useCartStore from "@/store/cart";
 import useUserStore from "@/store/user";
+import Search from "../search";
 // import { Link } from "next/link";
 const Navbar = () => {
   const [logOut, setLogout] = useState(false);
@@ -59,7 +60,8 @@ const Navbar = () => {
         </button>
       </div>
       {/* FULL SCREEN NAVBAR */}
-      <ul className="flex justify-end p-1 pt-6 text-lg mob_display:hidden">
+      <ul className="flex items-center justify-end p-1 pt-6 text-lg mob_display:hidden">
+        <Search />
         <Link href={"/"} className="navbar_li">
           Home
         </Link>

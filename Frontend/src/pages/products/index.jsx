@@ -1,5 +1,5 @@
 import Card from "@/components/card";
-import { useFetchAllCategories, useFetchAllProducts } from "@/hooks/query";
+import { useFetchAllCategories, useFetchAllProducts, useFetchSearchResults } from "@/hooks/query";
 import Layout from "@/layout/layout";
 import { useRouter } from "next/router";
 import React, { useState, useEffect } from "react";
@@ -17,6 +17,7 @@ const Products = () => {
     isLoading: isProductLoading,
     refetch,
   } = useFetchAllProducts();
+  
   const { data: categories, isLoading: isCategoryLoading } =
     useFetchAllCategories();
 
