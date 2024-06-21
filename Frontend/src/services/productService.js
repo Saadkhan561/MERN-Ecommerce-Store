@@ -57,8 +57,9 @@ export const fetchTrendingProducts = async() => {
 }
 
 export const searchResults = async(param) => {
+  const query = param.query
   try {
-    const res = await axios.get(`${BASE_URL}/search?q=${param}`)
+    const res = await axios.get(`${BASE_URL}/search?q=${query}`)
     return res.data
   } catch(err) {
     throw new Error(err.msg)

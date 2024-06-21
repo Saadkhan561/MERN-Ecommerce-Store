@@ -1,5 +1,9 @@
 import Card from "@/components/card";
-import { useFetchAllCategories, useFetchAllProducts, useFetchSearchResults } from "@/hooks/query";
+import {
+  useFetchAllCategories,
+  useFetchAllProducts,
+  useFetchSearchResults,
+} from "@/hooks/query";
 import Layout from "@/layout/layout";
 import { useRouter } from "next/router";
 import React, { useState, useEffect } from "react";
@@ -17,7 +21,7 @@ const Products = () => {
     isLoading: isProductLoading,
     refetch,
   } = useFetchAllProducts();
-  
+
   const { data: categories, isLoading: isCategoryLoading } =
     useFetchAllCategories();
 
@@ -38,14 +42,27 @@ const Products = () => {
 
   return (
     <Layout>
-      <div className={eval(router.query.open) ? "flex justify-center mt-10 mob_display:mt-2 opacity-40 duration-200":"flex justify-center mt-10 mob_display:mt-2 opacity-100 duration-200"}>
+      <div
+        className={
+          eval(router.query.open)
+            ? "flex justify-center mt-10 mob_display:mt-2 opacity-40 duration-200"
+            : "flex justify-center mt-10 mob_display:mt-2 opacity-100 duration-200"
+        }
+      >
         <div className="flex flex-col w-4/5 mob_display:w-11/12">
           <div className="flex justify-center">
-          <div className="flex gap-2 text-sm text-slate-500 mb-6 font-semibold">
-            <Link className='hover:underline cursor-pointer'href={'/'} >Home</Link>
-            <p>/</p>
-            <Link className='hover:underline cursor-pointer' href={'/products'}>Products</Link>
-          </div>
+            <div className="flex gap-2 text-sm text-slate-500 mb-6 font-semibold">
+              <Link className="hover:underline cursor-pointer" href={"/"}>
+                Home
+              </Link>
+              <p>/</p>
+              <Link
+                className="hover:underline cursor-pointer"
+                href={"/products"}
+              >
+                Products
+              </Link>
+            </div>
           </div>
           <div className="text-end">
             <select

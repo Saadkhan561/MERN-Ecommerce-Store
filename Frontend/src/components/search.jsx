@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const Search = () => {
-    const [query, setQuery] = useState()
+    const [query, setQuery] = useState('')
     const router = useRouter()
   return (
     <div className="flex justify-center mr-5">
@@ -15,7 +15,7 @@ const Search = () => {
             onChange={(e) => setQuery(e.target.value)}
           />
           <img
-          onClick={() => query && router.push(`/products?q=${query}`)}
+          onClick={() => query && router.push(`/searchResults?q=${query}`)}
             className="cursor-pointer"
             src="/images/search.png"
             alt=""
