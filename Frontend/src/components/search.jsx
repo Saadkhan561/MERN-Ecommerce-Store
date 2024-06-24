@@ -4,6 +4,13 @@ import React, { useEffect, useState } from "react";
 const Search = () => {
     const [query, setQuery] = useState('')
     const router = useRouter()
+
+    const handleKeyPress =(e) => {
+      if (e.key =="Enter") {
+        e.preventDefault()
+        router.push(`/searchResults?q=${query}`)
+      }
+    }
   return (
     <div className="flex justify-center mr-5">
       <div>
@@ -13,6 +20,7 @@ const Search = () => {
             type="text"
             placeholder="Search here..."
             onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={handleKeyPress}
           />
           <img
           onClick={() => query && router.push(`/searchResults?q=${query}`)}

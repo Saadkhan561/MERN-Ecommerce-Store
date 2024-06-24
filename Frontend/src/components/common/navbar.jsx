@@ -44,7 +44,6 @@ const Navbar = () => {
   };
 
   const {cart} = useCartStore()
-  console.log(Object.keys(cart).length)
 
   return (
     <div className={router.query.payment ? "opacity-50 duration-200":""}>

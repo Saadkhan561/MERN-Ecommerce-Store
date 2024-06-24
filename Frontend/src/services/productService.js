@@ -60,6 +60,9 @@ export const searchResults = async(param) => {
   const query = param.query
   try {
     const res = await axios.get(`${BASE_URL}/search?q=${query}`)
+    if (res.status == 404) {
+      throw new Error("No results found")
+    }
     return res.data
   } catch(err) {
     throw new Error(err.msg)
