@@ -31,6 +31,10 @@ app.use('/', userRoutes)
 // ORDER ROUTES
 app.use('/', orderRoutes)
 
+app.use('/', (req, res) => {
+  res.json({msg: "Hola amigos!"})
+})
+
 // app.post('/newCustomer', async (req, res) => {
 //     const { name, email, password } = req.body;
 //     try {
